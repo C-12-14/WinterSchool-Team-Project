@@ -1,4 +1,5 @@
 import cv2
+from cv2 import INTER_AREA
 import numpy as np
 import random 
 """
@@ -27,11 +28,13 @@ GREEN = (0,255,0)
 BLUE = (255,0,0)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
+COLOR1 = ()
+COLOR2 = (61, 217, 255)
 maze = []
 prob = random.randint(20,30)
 
 def createMaze():
-    canvas = np.full((50, 50,3), 255, dtype=np.uint8)
+    canvas = np.full((30, 30,3), 255, dtype=np.uint8)
     for i in range(canvas.shape[0]):
         for j in range(canvas.shape[1]):
             randomnumber = random.randint(1, 100)
@@ -45,10 +48,10 @@ def createMaze():
 
     canvas[startXY] = RED
     canvas[endXY] = BLUE
-
+    smaller_canvas = canvas
     canvas = cv2.resize(canvas,(500,500), interpolation=cv2.INTER_AREA)
 
-    return canvas, startXY, endXY
+    return canvas, startXY, endXY, smaller_canvas
 
 
 def find_dist(point, current):
@@ -59,8 +62,39 @@ def inRange(img,point):
     #checks if point is within the range of the image's dimensions
     return (point[0]>=0 and point[0]<img.shape[0] and point[1]>=0 and point[1]<img.shape[1])
 
-def bfs():
-    pass
+def bfs(img,start):
+    q = [[start]]       # QUeue for keeping track of path
+
+    while q:
+        showImg = cv2.resize(img, (500, 500), interpolation=INTER_AREA)         # Upscaling image for better view
+        cv2.imshow("BFS",showImg)
+        cv2.waitKey(1)
+        path = q.pop(0)         # Choosing a path from the queue to analyse the surroudning pixels of the last pixel in the path
+        r, s = path[-1]         # Coordinates of the last pixel in path
+
+        for (u,v) in [(-1,0), (1,0), (0,-1), (0,1)]:        # Looping over the four corners of the pixel
+                if inRange(img, (r+u,s+v)) and (img[r+u][s+v]!=BLACK).any() and (img[r+u][s+v]!=COLOR2).any():
+                    showImg = cv2.resize(img, (500, 500), interpolation=INTER_AREA)
+                    cv2.imshow("BFS",showImg)
+                    cv2.waitKey(1)
+                    if (img[r+u][s+v] == WHITE).all():
+                        img[r+u][s+v] = COLOR2          # Coloring the visited pixel
+                        new_path = list(path)           
+                        new_path.append((r+u, s+v))     # Adding the visited pixel to it's parent path
+                        q.append(new_path)              # updating the path in queue
+                    elif (img[r+u][s+v] ==  BLUE).all():
+                        return path                     # Returning the path from start to the end when the end is visited
+
+
+def trackBfs(img,start):
+    path = bfs(img,start)
+    path.pop(0)
+    showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+    for pixel in path:
+        img[pixel] = GREEN
+        showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+        cv2.imshow("BFS", showImg)
+        cv2.waitKey(1)
 
 def dfs():
     pass
@@ -115,14 +149,14 @@ def show_path(img, start, end, shortest_path):
     img1[end] = BLUE
     return img1
 
-maze,startXY,endXY = createMaze()
+maze,startXY,endXY, smaller_maze = createMaze()
 
-path_dj = dijkstra(maze, startXY, endXY)
-path_dj_img = show_path(maze,startXY, endXY, path_dj)
+# path_dj = dijkstra(maze, startXY, endXY)
+# path_dj_img = show_path(maze,startXY, endXY, path_dj)
 
+trackBfs(smaller_maze, startXY)
+# cv2.imshow("maze", maze)
 
-cv2.imshow("maze", maze)
-
-cv2.imshow("path",path_dj_img)
+# cv2.imshow("path",path_dj_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
