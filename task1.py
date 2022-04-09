@@ -22,43 +22,107 @@ the algorithms used in the first part of Task-1.
 Set a start point and an endpoint manually and apply the algorithms after doing the required pre-processing.
 """
 
+RED = (0,0,255)
+GREEN = (0,255,0)
+BLUE = (255,0,0)
+BLACK = (0,0,0)
+WHITE = (255,255,255)
+maze = []
+prob = random.randint(20,30)
+
+def createMaze():
+    canvas = np.full((50, 50,3), 255, dtype=np.uint8)
+    for i in range(canvas.shape[0]):
+        for j in range(canvas.shape[1]):
+            randomnumber = random.randint(1, 100)
+            if randomnumber<prob:
+                canvas[i][j] = (0,0,0)
+            else:
+                maze.append((i,j))
+
+    startXY = random.choice(maze)
+    endXY  = random.choice(maze)
+
+    canvas[startXY] = RED
+    canvas[endXY] = BLUE
+
+    canvas = cv2.resize(canvas,(500,500), interpolation=cv2.INTER_AREA)
+
+    return canvas, startXY, endXY
+
+
+def find_dist(point, current):
+    return (point[0] - current[0])**2 + (point[1] - current[1])**2
+    #Since we dont need the exact distance, we will keep it as square itself
+
+def inRange(img,point):
+    #checks if point is within the range of the image's dimensions
+    return (point[0]>=0 and point[0]<img.shape[0] and point[1]>=0 and point[1]<img.shape[1])
+
 def bfs():
     pass
 
 def dfs():
     pass
 
-def dijkstra():
-    pass
+def dijkstra(img, start, end):
+    n,m,l = img.shape
+    dist = np.full((n,m),fill_value = np.inf) #Stores distances of each pixel from start
+    dist[start] = 0 
+    parent = np.zeros((n,m,2)) #Stores x and y coordinates of parent, hence it has 3 dimensions
+    visited = np.zeros((n,m)) #Stores whether a pixel has been visited or not
+    visited[start] = 1
+    current = start
+    while current!=end:
+        visited[current]=1 
+        for i in range(-1,2): #-1,-0,1
+            for j in range(-1,2): #-1,-0,1
+                point = (current[0]+i,current[1]+j)
+                if inRange(img,point) and visited[point]==0 and not(img[point][1]==BLACK[1] and img[point][2] == BLACK[2]):
+                    if dist[point]>dist[current]+find_dist(point,current):
+                        dist[point] = dist[current]+find_dist(point,current)
+                        parent[point[0],point[1],0] = current[0]
+                        parent[point[0],point[1],1] = current[1]
+
+        #Finding the node with minimum distance, which will become the next node from which we check
+        min = np.inf
+        for i in range(n):
+            for j in range(m):
+                if dist[i,j] < min and visited[i,j] == 0:
+                    min = dist[i,j]
+                    current = (i,j)
+        
+    #now we will get the shortest path from the parent list
+    curr_node = end
+    shortest_path = []
+    while curr_node!=start:
+        shortest_path.append(curr_node)
+        pair = int(parent[curr_node[0],curr_node[1],0]),int(parent[curr_node[0],curr_node[1],1])
+        curr_node = (pair[0],pair[1])
+
+    shortest_path.append(start)
+    shortest_path.reverse()
+    return shortest_path
 
 def a_star():
     pass
 
-def show_path():
-    pass
+def show_path(img, start, end, shortest_path):
+    img1 = img
+    for coord in shortest_path:
+            img1[coord] = GREEN
+    img1[start] = RED
+    img1[end] = BLUE
+    return img1
 
-maze = np.full((50,50), 0)
-prob = random.uniform(0.20,0.30) #! probability between 0.2 and 0.3
+maze,startXY,endXY = createMaze()
 
-for i in range(50):
-    for j in range(50):
-        if random.random() < prob:
-            maze[i][j] = 255
-
-
-maze = cv2.resize(maze.astype(np.uint8),(600,600))
-
-x1,y1 = random.randint(0,600),random.randint(0,600) #! Start point
-x2,y2 = random.randint(0,600),random.randint(0,600) #! End point
-maze[x1,y1] = maze [x2,y2] = 127
-start = (x1,y1)
-end = (x2,y2)
-
-#! Black => Obstacle, White => Path
-
-cv2.namedWindow('Maze',cv2.WINDOW_NORMAL)
-cv2.imshow('Maze',maze.astype(np.uint8))
+path_dj = dijkstra(maze, startXY, endXY)
+path_dj_img = show_path(maze,startXY, endXY, path_dj)
 
 
+cv2.imshow("maze", maze)
+
+cv2.imshow("path",path_dj_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
