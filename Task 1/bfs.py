@@ -15,7 +15,8 @@ def inRange(img,point):
     #checks if point is within the range of the image's dimensions
     return (point[0]>=0 and point[0]<img.shape[0] and point[1]>=0 and point[1]<img.shape[1])
 
-def bfs(img,start):
+def bfs(inimg,start):
+    img = inimg.copy()
     q = [[start]]       # QUeue for keeping track of path
 
     while q:
@@ -36,10 +37,11 @@ def bfs(img,start):
                         new_path.append((r+u, s+v))     # Adding the visited pixel to it's parent path
                         q.append(new_path)              # updating the path in queue
                     elif (img[r+u][s+v] ==  BLUE).all():
-                        return path                     # Returning the path from start to the end when the end is visited
+                        return path, img                     # Returning the path from start to the end when the end is visited
 
-def trackBfs(img,start):
-    path = bfs(img,start)
+def trackBfs(inimg,start):
+    img = inimg
+    path, img = bfs(img,start)
     path.pop(0)
     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
     for pixel in path:
@@ -47,11 +49,12 @@ def trackBfs(img,start):
         showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
         cv2.imshow("BFS", showImg)
         cv2.waitKey(1)
-    print("Distance: "+str(len(path)) + " pixels")
-start = time.time()
-maze,startXY,endXY, smaller_maze = createMaze()
-trackBfs(smaller_maze, startXY)
-end = time.time()
-print("Time: " + str(end-start) + " seconds")
+    print("Distance: "+str(len(path)+1) + " pixels")
+
+# start = time.time()
+#  maze,startXY,endXY, smaller_maze = createMaze()
+# trackBfs(smaller_maze, startXY)
+# end = time.time()
+# print("Time: "+str(round(end-start, 4)) + " seconds")
 cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -55,7 +55,9 @@ def dijkstra(img, start, end):
 def trackaStar(img, start, end):
     dist, parent = dijkstra(img, start, end)
     current = tuple(list(map(int, parent[end])))
+    dist = 1
     while current != start:
+        dist += 1
         img[current] = GREEN
         current = tuple(list(map(int, parent[current])))
         showImg = cv2.resize(img, (500, 500), interpolation=cv2.INTER_AREA)
@@ -63,9 +65,9 @@ def trackaStar(img, start, end):
         cv2.waitKey(1)
     print("Distance: " + str(dist) + " pixels")
 
-start = time.time()
-maze,startXY,endXY, smaller_maze = createMaze()
-trackaStar(smaller_maze, startXY, endXY)
-end = time.time()
-print(str(end-start) + " seconds")
-cv2.waitKey(0)
+# start = time.time()
+# maze,startXY,endXY, smaller_maze = createMaze()
+# trackaStar(smaller_maze, startXY, endXY)
+# end = time.time()
+# print("Time: "+str(round(end-start, 4)) + " seconds")
+# cv2.waitKey(0)

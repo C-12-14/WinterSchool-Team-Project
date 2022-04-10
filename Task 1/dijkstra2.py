@@ -52,7 +52,8 @@ def dijkstra(img, start, end):
             distance[end] = distance[current] +find_dist(end, current)
             return distance[end], parent
 
-def trackDijkastra(img, start, end):
+def trackDijkastra(inimg, start, end):
+    img = inimg
     dist, parent = dijkstra(img, start, end)
     current = tuple(list(map(int, parent[end])))
     while current != start:
@@ -63,12 +64,12 @@ def trackDijkastra(img, start, end):
         cv2.waitKey(1)
     print("Distance: " + str(dist) + " pixels")
 
-start = time.time()
-maze,startXY,endXY, smaller_maze = createMaze()
-trackDijkastra(smaller_maze, startXY, endXY)
-end = time.time()
-print(str(end-start) + " seconds")
-cv2.waitKey(0)
+# start = time.time()
+# maze,startXY,endXY, smaller_maze = createMaze()
+# trackDijkastra(smaller_maze, startXY, endXY)
+# end = time.time()
+# print("Time: "+str(round(end-start, 4)) + " seconds")
+# cv2.waitKey(0)
 # cv2.imshow('Maze',maze)
 # cv2.imshow('Dijkstra Path',path_dj_img)
 # cv2.waitKey(0)
