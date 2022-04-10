@@ -1,6 +1,7 @@
 import cv2
 from cv2 import INTER_AREA
 from maze_generation import createMaze
+import time
 
 RED = (0,0,255)
 GREEN = (0,255,0)
@@ -46,8 +47,11 @@ def trackBfs(img,start):
         showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
         cv2.imshow("BFS", showImg)
         cv2.waitKey(1)
-
+    print("Distance: "+str(len(path)) + " pixels")
+start = time.time()
 maze,startXY,endXY, smaller_maze = createMaze()
 trackBfs(smaller_maze, startXY)
+end = time.time()
+print("Time: " + str(end-start) + " seconds")
 cv2.waitKey(0)
 cv2.destroyAllWindows()

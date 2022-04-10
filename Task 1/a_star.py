@@ -32,12 +32,12 @@ def dijkstra(img, start, end):
         if current != end:
             for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
                 showImg = cv2.resize(img, (500, 500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("dijkstra", showImg)
+                cv2.imshow("A*", showImg)
                 cv2.waitKey(1)
                 newpoint = (current[0]+i, current[1]+j)
                 if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
-                    if distance[newpoint] > distance[current] + find_dist(newpoint, current):
-                        distance[newpoint] = distance[current] + find_dist(newpoint, current)
+                    if distance[newpoint] > distance[current] + find_dist(newpoint, current) + find_dist(newpoint, end):
+                        distance[newpoint] = distance[current] + find_dist(newpoint, current)+ find_dist(newpoint, end)
                         img[newpoint] = COLOR2
                         parent[newpoint] =  current
                         visited.append(newpoint)
@@ -52,24 +52,20 @@ def dijkstra(img, start, end):
             distance[end] = distance[current] +find_dist(end, current)
             return distance[end], parent
 
-def trackDijkastra(img, start, end):
+def trackaStar(img, start, end):
     dist, parent = dijkstra(img, start, end)
     current = tuple(list(map(int, parent[end])))
     while current != start:
         img[current] = GREEN
         current = tuple(list(map(int, parent[current])))
         showImg = cv2.resize(img, (500, 500), interpolation=cv2.INTER_AREA)
-        cv2.imshow("dijkstra", showImg)
+        cv2.imshow("A*", showImg)
         cv2.waitKey(1)
     print("Distance: " + str(dist) + " pixels")
 
 start = time.time()
 maze,startXY,endXY, smaller_maze = createMaze()
-trackDijkastra(smaller_maze, startXY, endXY)
+trackaStar(smaller_maze, startXY, endXY)
 end = time.time()
 print(str(end-start) + " seconds")
 cv2.waitKey(0)
-# cv2.imshow('Maze',maze)
-# cv2.imshow('Dijkstra Path',path_dj_img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
