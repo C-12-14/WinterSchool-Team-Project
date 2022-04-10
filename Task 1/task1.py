@@ -35,6 +35,7 @@ COLOR2 = (61, 217, 255)
 maze = []
 prob = random.randint(20,30)
 path_found = False
+
 def createMaze():
     canvas = np.full((50, 50,3), 255, dtype=np.uint8)
     for i in range(canvas.shape[0]):
@@ -170,7 +171,7 @@ def dijkstra(img, start, end):
         for i in range(-1,2): #-1,-0,1
             for j in range(-1,2): #-1,-0,1
                 point = (current[0]+i,current[1]+j)
-                if inRange(img,point) and visited[point]==0 and not(img[point][1]==BLACK[1] and img[point][2] == BLACK[2]):
+                if inRange(img,point) and visited[point]==0 and not(img[point]==BLACK).all():
                     if dist[point]>dist[current]+find_dist(point,current):
                         dist[point] = dist[current]+find_dist(point,current)
                         parent[point[0],point[1],0] = current[0]
@@ -215,7 +216,7 @@ maze,startXY,endXY, smaller_maze = createMaze()
 # trackBfs(smaller_maze, startXY)
 # trackDfs(smaller_maze, startXY)
 
-dfs2(smaller_maze, startXY)
+# dfs2(smaller_maze, startXY)
 
 # cv2.imshow("maze", maze)
 
