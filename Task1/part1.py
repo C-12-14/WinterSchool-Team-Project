@@ -19,21 +19,18 @@ an obstacle, and the white pixel is synonymous with an open path.
 #!  variety of Path-finding Algorithms(A*, BFS, DFS, Dijkstra should be compulsorily used while using more path-finding 
 #!  Graph/Tree Algorithms will fetch more points). Finally, document the time taken for path-finding and the distance of 
 #!  path found for all the Algorithms for a variety of Randomly-generated images.
-2. In the second part, there is a map provided to you(Attached in mail). The map has been pre-processed for you. 
-It has a red pixel at (880, 145) and a green pixel at (359, 563). The red pixel is the start point, and the green 
-pixel is the endpoint. You have to work on this map and get the shortest path from the start to the endpoint using 
-the algorithms used in the first part of Task-1.
-3. The third part is pretty straightforward. You have to get images of your locality from Google Maps. 
-Set a start point and an endpoint manually and apply the algorithms after doing the required pre-processing.
 """
 
 maze,startXY,endXY, smaller_maze = createMaze()
 
+"""
+PRESS ANY KEY AFTER THE PATH FINDING IS COMPLETE TO GO THE THE NEXT ALGORITHM
+"""
 
 temp = np.copy(smaller_maze)
 print("BFS: ")
 start = time.time()
-trackBfs(temp, startXY)
+trackBfs(temp, startXY, endXY)
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -42,7 +39,7 @@ cv2.waitKey(0)
 temp = np.copy(smaller_maze)
 print("DFS: ")
 start = time.time()
-dfs(temp, startXY)
+dfs(temp, startXY, endXY)
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")

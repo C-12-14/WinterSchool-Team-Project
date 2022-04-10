@@ -31,9 +31,12 @@ def dijkstra(img, start, end):
     while True:
         if current != end:
             for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
-                showImg = cv2.resize(img, (500, 500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("A*", showImg)
-                cv2.waitKey(1)
+                if img.shape[0] < 100:
+                    showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+                    cv2.imshow("A*", showImg)
+                    cv2.waitKey(1)
+                else:
+                    cv2.imshow("A*", img)
                 newpoint = (current[0]+i, current[1]+j)
                 if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
                     if distance[newpoint] > distance[current] + find_dist(newpoint, current) + find_dist(newpoint, end):
@@ -60,9 +63,12 @@ def trackaStar(img, start, end):
         dist += 1
         img[current] = GREEN
         current = tuple(list(map(int, parent[current])))
-        showImg = cv2.resize(img, (500, 500), interpolation=cv2.INTER_AREA)
-        cv2.imshow("A*", showImg)
-        cv2.waitKey(1)
+        if img.shape[0] < 100:
+            showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+            cv2.imshow("A*", showImg)
+            cv2.waitKey(1)
+        else:
+            cv2.imshow("A*", img)
     print("Distance: " + str(dist) + " pixels")
 
 # start = time.time()
