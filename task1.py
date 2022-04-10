@@ -96,8 +96,40 @@ def trackBfs(img,start):
         cv2.imshow("BFS", showImg)
         cv2.waitKey(1)
 
-def dfs():
-    pass
+
+def dfs(img,start):
+    q = [[start]]       # QUeue for keeping track of path
+
+    while q:
+        showImg = cv2.resize(img, (500, 500), interpolation=INTER_AREA)         # Upscaling image for better view
+        cv2.imshow("DFS",showImg)
+        cv2.waitKey(1)
+        path = q.pop(-1)         # Choosing a path from the queue to analyse the surroudning pixels of the last pixel in the path
+        r, s = path[-1]         # Coordinates of the last pixel in path
+
+        for (u,v) in [(-1,0), (1,0), (0,-1), (0,1)]:        # Looping over the four corners of the pixel
+                if inRange(img, (r+u,s+v)) and (img[r+u][s+v]!=BLACK).any() and (img[r+u][s+v]!=COLOR2).any():
+                    showImg = cv2.resize(img, (500, 500), interpolation=INTER_AREA)
+                    cv2.imshow("DFS",showImg)
+                    cv2.waitKey(1)
+                    if (img[r+u][s+v] == WHITE).all():
+                        img[r+u][s+v] = COLOR2          # Coloring the visited pixel
+                        new_path = list(path)           
+                        new_path.append((r+u, s+v))     # Adding the visited pixel to it's parent path
+                        q.append(new_path)              # updating the path in queue
+                    elif (img[r+u][s+v] ==  BLUE).all():
+                        return path                     # Returning the path from start to the end when the end is visited
+
+
+def trackDfs(img,start):
+    path = dfs(img,start)
+    path.pop(0)
+    showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+    for pixel in path:
+        img[pixel] = GREEN
+        showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+        cv2.imshow("DFS", showImg)
+        cv2.waitKey(1)
 
 def dijkstra(img, start, end):
     n,m,l = img.shape
@@ -154,7 +186,9 @@ maze,startXY,endXY, smaller_maze = createMaze()
 # path_dj = dijkstra(maze, startXY, endXY)
 # path_dj_img = show_path(maze,startXY, endXY, path_dj)
 
-trackBfs(smaller_maze, startXY)
+# trackBfs(smaller_maze, startXY)
+trackDfs(smaller_maze, startXY)
+
 # cv2.imshow("maze", maze)
 
 # cv2.imshow("path",path_dj_img)
