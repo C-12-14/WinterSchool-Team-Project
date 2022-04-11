@@ -4,7 +4,7 @@ from maze_generation import createMaze
 import sys
 import time
 
-sys.setrecursionlimit(1000000)
+sys.setrecursionlimit(20000000)
 RED = (0,0,255)
 GREEN = (0,255,0)
 BLUE = (255,0,0)
@@ -36,7 +36,7 @@ def dfs2(inimg, start, end):
                 img[i][j] = GREEN
                 dist +=1
                 break
-            if (img[x+i][y+j] == WHITE).all():
+            if not (img[x+i][y+j] == BLUE).all() and not (img[x+i][y+j] == RED).all():
                         img[x+i][y+j] = COLOR2
                         dfs2(img, (x+i,y+j), end)
             if path_found:      # Stops further recursion and starts traceback
