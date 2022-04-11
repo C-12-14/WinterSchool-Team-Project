@@ -27,7 +27,9 @@ def dijkstra(img, start, end):
     visited = []
     current = start
     distance = np.full((n,m), np.inf)
+    pixel_distance = np.full((n,m), np.inf)
     distance[start] = 0
+    pixel_distance[start] = 0
     while True:
         if current != end:
             for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
@@ -39,8 +41,9 @@ def dijkstra(img, start, end):
                     cv2.imshow("A*", img)
                 newpoint = (current[0]+i, current[1]+j)
                 if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
-                    if distance[newpoint] > distance[current] + find_dist(newpoint, current) + find_dist(newpoint, end):
-                        distance[newpoint] = distance[current] + find_dist(newpoint, current)+ find_dist(newpoint, end)
+                    pixel_distance[newpoint] = pixel_distance[current] + find_dist(newpoint, current)
+                    if distance[newpoint] > pixel_distance[newpoint]+ find_dist(newpoint, current) + find_dist(newpoint, end):
+                        distance[newpoint] = pixel_distance[newpoint] + find_dist(newpoint, current)+ find_dist(newpoint, end)
                         img[newpoint] = COLOR2
                         parent[newpoint] =  current
                         visited.append(newpoint)

@@ -9,7 +9,7 @@ maze = []
 prob = random.randint(20,30)
 
 def createMaze():
-    canvas = np.full((30, 30,3), 255, dtype=np.uint8)
+    canvas = np.full((50, 50,3), 255, dtype=np.uint8)
     for i in range(canvas.shape[0]):
         for j in range(canvas.shape[1]):
             randomnumber = random.randint(1, 100)
