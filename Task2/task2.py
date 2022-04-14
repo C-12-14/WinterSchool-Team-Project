@@ -23,13 +23,13 @@ where it will drive the motors depending on the output coming to it.
 c. In the third part, implement everything in sync i.e. in parallel.
 """
 
-def signal():
+def signal(img):
     pass
 
-def turn():
+def turn(img):
     pass
 
-def speed():
+def speed(img):
     pass
 
 vid = cv2.VideoCapture('task2_video.mp4')
