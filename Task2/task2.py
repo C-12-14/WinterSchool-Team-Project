@@ -1,6 +1,5 @@
 import cv2
 import numpy as np 
-
 """
 This task comprises two main parts and one bonus part:
 1. In the first part, you have to generate a 1-2 minute long video using
