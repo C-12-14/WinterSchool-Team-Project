@@ -1,10 +1,7 @@
 import cv2
 import time
 import numpy as np
-from bfs import trackBfs
-from dfs import dfs
-from dijkstra2 import trackDijkastra as dijkstra
-from a_star import trackaStar as astar
+from Traversal import MazeTraversal
 
 RED = (0,0,255)
 GREEN = (0,255,0)
@@ -16,10 +13,12 @@ endXY = (563,359)
 maze[startXY]=RED
 maze[endXY]=GREEN
 
+algos = MazeTraversal(maze, startXY, endXY)
+
 temp = np.copy(maze)
 print("BFS: ")
 start = time.time()
-trackBfs(temp, startXY, endXY)
+algos.trackBfs()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -28,7 +27,7 @@ cv2.waitKey(0)
 temp = np.copy(maze)
 print("DFS: ")
 start = time.time()
-dfs(temp, startXY, endXY)
+algos.dfs()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -37,7 +36,7 @@ cv2.waitKey(0)
 temp = np.copy(maze)
 print("Dijkstra: ")
 start = time.time()
-dijkstra(temp, startXY, endXY)
+algos.dijkstra()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -46,7 +45,7 @@ cv2.waitKey(0)
 temp = np.copy(maze)
 print("A*: ")
 start = time.time()
-astar(temp, startXY, endXY)
+algos.trackaStar()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")

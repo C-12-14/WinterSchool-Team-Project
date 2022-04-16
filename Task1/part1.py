@@ -2,10 +2,7 @@ import cv2
 import time
 import numpy as np
 from maze_generation import createMaze
-from bfs import trackBfs
-from dfs import dfs
-from dijkstra2 import trackDijkastra as dijkstra
-from a_star import trackaStar as astar
+from Traversal import MazeTraversal
 """
 This task comprises three parts:
 1. In the first part, using the probability of 0.2~0.3, you have to generate a maze. The maze will be such that each 
@@ -23,6 +20,8 @@ an obstacle, and the white pixel is synonymous with an open path.
 
 maze,startXY,endXY, smaller_maze = createMaze()
 
+algos = MazeTraversal(maze, startXY, endXY)
+
 """
 PRESS ANY KEY AFTER THE PATH FINDING IS COMPLETE TO GO THE THE NEXT ALGORITHM
 """
@@ -30,7 +29,7 @@ PRESS ANY KEY AFTER THE PATH FINDING IS COMPLETE TO GO THE THE NEXT ALGORITHM
 temp = np.copy(smaller_maze)
 print("BFS: ")
 start = time.time()
-trackBfs(temp, startXY, endXY)
+algos.trackBfs()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -39,7 +38,7 @@ cv2.waitKey(0)
 temp = np.copy(smaller_maze)
 print("DFS: ")
 start = time.time()
-dfs(temp, startXY, endXY)
+algos.dfs()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -48,7 +47,7 @@ cv2.waitKey(0)
 temp = np.copy(smaller_maze)
 print("Dijkstra: ")
 start = time.time()
-dijkstra(temp, startXY, endXY)
+algos.dijkstra()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
@@ -57,7 +56,7 @@ cv2.waitKey(0)
 temp = np.copy(smaller_maze)
 print("A*: ")
 start = time.time()
-astar(temp, startXY, endXY)
+algos.trackaStar()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
