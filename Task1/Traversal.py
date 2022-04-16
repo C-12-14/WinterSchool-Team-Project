@@ -34,7 +34,7 @@ class MazeTraversal:
 
     # <--------------------- BFS --------------------->
     def bfs(self):
-        img = self.inimg
+        img = np.copy(self.inimg)
         q = [[self.start]]       # QUeue for keeping track of path
 
         while q:
@@ -64,8 +64,8 @@ class MazeTraversal:
                             return path                  # Returning the path from self.start to the self.end when the self.end is visited
 
     def trackBfs(self):
-        img = self.inimg
-        path= self.bfs(img,self.start, self.end)
+        img = np.copy(self.inimg)
+        path= self.bfs()
         path.pop(0)
         for pixel in path:
             img[pixel] = GREEN
@@ -80,11 +80,11 @@ class MazeTraversal:
 
     # <--------------------- DFS --------------------->
 
-    def dfs2(self):
-        img = self.inimg
+    def dfs2(self, start):
+        img = np.copy(self.inimg)
         global path_found
         global dist
-        i, j = self.start
+        i, j = start
         if img.shape[0] < 100:
             showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
             cv2.imshow("dfs", showImg)
@@ -100,7 +100,7 @@ class MazeTraversal:
                     break
                 if not (img[x+i][y+j] == BLUE).all() and not (img[x+i][y+j] == RED).all():
                             img[x+i][y+j] = COLOR2
-                            self.dfs2(img, (x+i,y+j), self.end)
+                            self.dfs2((x+i,y+j))
                 if path_found:      # Stops further recursion and starts traceback
                     img[i][j] = GREEN
                     if img.shape[0] < 100:
@@ -113,15 +113,14 @@ class MazeTraversal:
                     break
     
     def dfs(self):
-        img = self.inimg
-        self.dfs2(img, self.start,self.end)
+        self.dfs2(self.start)
         print("Distance: "+str(dist) + " pixels")
 
 
     # <--------------------- DIJKSTRA --------------------->
 
     def dijkstra(self):
-        img = self.inimg
+        img = np.copy(self.inimg)
         n, m = img.shape[:2]
         parent = np.zeros((n,m,2))
         visited = []
@@ -156,7 +155,7 @@ class MazeTraversal:
                 return distance[self.end], parent
 
     def trackDijkastra(self):
-        img = self.inimg
+        img = np.copy(self.inimg)
         dist, parent = self.dijkstra(img, self.start, self.end)
         current = tuple(list(map(int, parent[self.end])))
         while current != self.start:
@@ -173,7 +172,7 @@ class MazeTraversal:
 
     # <--------------------- A* --------------------->
     def aStar(self):
-        img = self.inimg
+        img = np.copy(self.inimg)
         n, m = img.shape[:2]
         parent = np.zeros((n,m,2))
         visited = []
@@ -211,7 +210,7 @@ class MazeTraversal:
                 return distance[self.end], parent
 
     def trackaStar(self):
-        img = self.inimg
+        img = np.copy(self.inimg)
         dist, parent = self.aStar(img, self.start, self.end)
         current = tuple(list(map(int, parent[self.end])))
         dist = 1

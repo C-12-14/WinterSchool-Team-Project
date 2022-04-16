@@ -20,13 +20,12 @@ an obstacle, and the white pixel is synonymous with an open path.
 
 maze,startXY,endXY, smaller_maze = createMaze()
 
-algos = MazeTraversal(maze, startXY, endXY)
+algos = MazeTraversal(smaller_maze, startXY, endXY)
 
 """
 PRESS ANY KEY AFTER THE PATH FINDING IS COMPLETE TO GO THE THE NEXT ALGORITHM
 """
 
-temp = np.copy(smaller_maze)
 print("BFS: ")
 start = time.time()
 algos.trackBfs()
