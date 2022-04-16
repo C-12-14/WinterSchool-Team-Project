@@ -42,7 +42,7 @@ classes = ('20','30','50','60','70','80',
            'End no passing veh > 3.5 tons')
 
 
-model = load_model('traffic_classifier.h5')
+model = load_model('data_svm.hdf5')
 
 cap = cv.VideoCapture('Task2\\task2_video.mp4')
 
