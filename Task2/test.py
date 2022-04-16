@@ -17,11 +17,16 @@ def get_dominant_color(image):
 def get_speed(img):
     return pytesseract.image_to_string(img, lang = "eng", config="--psm 7 -c tessedit_char_whitelist='0123456789'")
    
+pytesseract.pytesseract.tesseract_cmd = r'D:\Softwares\Tesseract-OCR\tesseract.exe' # lurkingryuu's PC
 
-vid = cv2.VideoCapture('task2_video.mp4')
+vid = cv2.VideoCapture('Task2\\task2_video.mp4')
 
 while 1: 
     ret, frame = vid.read()
+
+    if not ret:
+        break
+
     cv2.imshow('camera', frame)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     img = cv2.medianBlur(gray, 37)  

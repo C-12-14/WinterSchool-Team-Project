@@ -1,6 +1,11 @@
 # Sussy Pixels
 This is our submission for WinterSchool 2022 Problem Statements for the vertical: Computer Vision.
 
+## Setup
+```
+pip install -r requirements.txt
+```
+
 ### Team Members
 
 1. Yash Sirvi (21CS10083)
