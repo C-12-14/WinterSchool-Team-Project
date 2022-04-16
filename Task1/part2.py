@@ -15,7 +15,6 @@ maze[endXY]=GREEN
 
 algos = MazeTraversal(maze, startXY, endXY)
 
-temp = np.copy(maze)
 print("BFS: ")
 start = time.time()
 algos.trackBfs()
@@ -36,7 +35,7 @@ cv2.waitKey(0)
 temp = np.copy(maze)
 print("Dijkstra: ")
 start = time.time()
-algos.dijkstra()
+algos.trackDijkastra()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
 print("------------------------------------------------")
