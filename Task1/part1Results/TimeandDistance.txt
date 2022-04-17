@@ -1,0 +1,14 @@
+Result for 100 iterations:
+
+Average time taken by BFS: 0.014017062187194824
+Average distance travelled in BFS: 32.82 pixels
+------------------------------------------------
+Average time taken by DFS: 0.0002350449562072754
+Average distance travelled in DFS: 1109.68 pixels
+------------------------------------------------
+Average time taken by Dijkstra: 0.012811832427978516
+Average distance travelled in Dijkstra: 32.82 pixels
+------------------------------------------------
+Average time taken by Astar: 0.0008957910537719726
+Average distance travelled in Astar: 34.14 pixels
+------------------------------------------------

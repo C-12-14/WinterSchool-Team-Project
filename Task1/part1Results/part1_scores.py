@@ -5,9 +5,6 @@ from maze_generation import createMaze
 from Traversal_mod import MazeTraversal
 
 
-maze,startXY,endXY, smaller_maze = createMaze()
-
-algos = MazeTraversal(smaller_maze, startXY, endXY)
 
 # <---------- Variables to document time taken and distance ---------->
 avg_time_Bfs = 0
@@ -19,40 +16,46 @@ avg_dist_Dfs = 0
 avg_dist_Dijkstra = 0
 avg_dist_Astar = 0
 
+n=500
+for i in range (n):
+    maze,startXY,endXY, smaller_maze = createMaze()
+    algos = MazeTraversal(smaller_maze, startXY, endXY)
 
-for i in range (1000):
     start = time.time()
     avg_dist_Bfs+=algos.trackBfs()
     end = time.time()
     avg_time_Bfs += (end-start)
 
     temp = np.copy(smaller_maze)
+    algos = MazeTraversal(temp, startXY, endXY)
     start = time.time()
     avg_dist_Dfs+=algos.dfs()
     end = time.time()
     avg_time_Dfs += (end-start)
 
     temp = np.copy(smaller_maze)
+    algos = MazeTraversal(temp, startXY, endXY)
     start = time.time()
     avg_dist_Dijkstra += algos.trackDijkastra()
     end = time.time()
     avg_time_Dijkstra += (end-start)
 
     temp = np.copy(smaller_maze)
+    algos = MazeTraversal(temp, startXY, endXY)
     start = time.time()
     avg_dist_Astar += algos.trackaStar()
     end = time.time()
     avg_time_Astar += (end-start)
 
 
-avg_time_Bfs /= 1000
-avg_time_Dfs /= 1000
-avg_time_Dijkstra /= 1000
-avg_time_Astar /= 1000
-avg_dist_Bfs /= 1000
-avg_dist_Dfs /= 1000
-avg_dist_Dijkstra /= 1000
-avg_dist_Astar /= 1000
+avg_time_Bfs /= n
+avg_time_Dfs /= n
+avg_time_Dijkstra /= n
+avg_time_Astar /= n
+avg_dist_Bfs /= n
+avg_dist_Dfs /= n
+avg_dist_Dijkstra /= n
+avg_dist_Astar /= n
 
 print("Average time taken by BFS: "+str(avg_time_Bfs))
 print("Average distance travelled in BFS: "+str(avg_dist_Bfs)+" pixels")
