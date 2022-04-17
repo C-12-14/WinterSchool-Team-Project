@@ -54,6 +54,7 @@ while 1:
         elif dominant_color[1] > 150 and not (dominant_color[2] > 150 and dominant_color[0] > 150):
             #it's a go sign
             print("GO")
+        
         elif all(dominant_color > 150):
             #it's a speed sign
             speed = get_speed(square)

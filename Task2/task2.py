@@ -13,13 +13,7 @@ images to complete the 12-15 images requirement.
 #!  red sign pops up, the motors will stop unless and until a new image of the green sign comes up. Some things have to
 #!   be taken care of, like, if a red sign has come up, or a Stop signal has come up, then immediately after it, a green 
 #!   sign should come, or a Go signal should come.
-3. This is the bonus part. It comprises three parts:
-a. The first part of the bonus task is a parallel implementation of
-video generation and storing the output in the text file.
-b. The second part is the hardware implementation of the whole
-thing. This means that the output produced in the text file should be read and sent to the Arduino, 
-where it will drive the motors depending on the output coming to it.
-c. In the third part, implement everything in sync i.e. in parallel.
+
 """
 
 def signal(img):
