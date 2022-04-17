@@ -26,12 +26,12 @@ classes = ('20','30','50','60','70','80',
            'Traffic signals',      
            'Pedestrians',     
            'Children crossing',     
-           'Bicycles crossing',       
+           'Turn left ahead',       
            'Beware of ice/snow',
            'Wild animals crossing',      
            'End speed + passing limits',      
            'Turn right ahead',     
-           'Turn left ahead',       
+           'Bicycle Crossing',       
            'Ahead only',      
            'Go straight or right',      
            'Go straight or left',      
@@ -42,9 +42,9 @@ classes = ('20','30','50','60','70','80',
            'End no passing veh > 3.5 tons')
 
 
-model = load_model('data_svm.hdf5')
+model = load_model('traffic_classifier.h5')
 
-cap = cv.VideoCapture('Task2\\task2_video.mp4')
+cap = cv.VideoCapture('Task2/video.mp4')
 
 while True:
     success, frame = cap.read()
@@ -53,7 +53,6 @@ while True:
     image = image.resize((30, 30))
     image = np.expand_dims(image, axis=0)
     image = np.array(image)
-    print(image.shape)
     pred = model.predict([image]).argmax()
     sign = classes[pred]
     print(sign)
