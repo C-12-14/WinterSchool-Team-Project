@@ -33,3 +33,8 @@ The video that we have made in Part 1 and are using for Part 2 is `video.mp4`
 
 
 
+## Changes done by us
+
+1. We used colors instead of grayscale for visualisation.
+2. We faced a lot of difficulties when trying to use Template Matching for the 2nd Task. That is why we instead used a [trained model](https://github.com/rahulsonone1234/Traffic-Sign-Recognition) for detecting signs.
+
