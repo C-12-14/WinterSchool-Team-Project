@@ -37,8 +37,10 @@ def createMaze():
                     maze.append((i,j))
 
     startXY = random.choice(maze)
+    while(not checkNbhd(canvas,startXY[0],startXY[1])):
+        startXY = random.choice(maze)
     endXY  = random.choice(maze)
-    while(endXY==startXY):
+    while(endXY==startXY or not checkNbhd(canvas,endXY[0],endXY[1])):
         endXY  = random.choice(maze)
 
     canvas[startXY] = RED

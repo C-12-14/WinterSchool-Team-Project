@@ -16,7 +16,8 @@ avg_dist_Dfs = 0
 avg_dist_Dijkstra = 0
 avg_dist_Astar = 0
 
-n=500
+n=100 #number of iterations
+
 for i in range (n):
     maze,startXY,endXY, smaller_maze = createMaze()
     algos = MazeTraversal(smaller_maze, startXY, endXY)

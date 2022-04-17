@@ -18,7 +18,7 @@ start = time.time()
 algos.trackBfs()
 end = time.time()
 print("Time: "+str(round(end-start, 4)) + " seconds")
-print("------------------------------------------------")
+print("------------------------------------------------")   
 cv2.waitKey(0)
 
 temp = np.copy(smaller_maze)
