@@ -1,0 +1,16 @@
+Start Motor
+696.22 rpm
+1740.54 rpm
+Turn left ahead
+1044.32 rpm
+Turn right ahead
+100
+120
+2088.65 rpm
+696.22 rpm
+Stop Motor
+Start Motor
+2088.65 rpm
+100
+1740.54 rpm
+Stop Motor
