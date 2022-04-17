@@ -1,19 +1,35 @@
 # Sussy Pixels
 This is our submission for WinterSchool 2022 Problem Statements for the vertical: Computer Vision.
 
-## Setup
-```
-pip install -r requirements.txt
-```
-
 ### Team Members
 
 1. Yash Sirvi (21CS10083)
 2. Ashwin Prasanth (21CS30009)
 3. Yelisetty Karthikeya S M (21CS30060)
 
-### INSTRUCTIONS FOR MID EVALUATION:
-GO TO THE "TASK 1" FOLDER AND RUN "part1.py" TO SEE OUR IMPLEMENTATION SO FAR...
+## Setup
+```
+pip install -r requirements.txt
+```
 
-### DISCLAIMER FOR MID EVALUATION:
-We have used colors instead of grayscale for visualisation for purely asthetic purposes.
+### Instructions for Task 1:
+Go to the `Task1` folder and run:
+
+1) `part1.py` for Part 1
+2) `part2.py` for Part 2
+3) `part3.py` for Part 3 
+
+You can also see the corresponding results of each part by checking the corresponding folder, named in the format `partXResults` 
+
+Kindly note that in `par1Results`, only `TimeandDistance.txt` needs to be checked
+
+### Instructions for Task 2:
+
+Go to the `Task2` folder and run `task2.py`.
+
+The video that we have made in Part 1 and are using for Part 2 is `video.mp4`
+
+**Note:** We have not attempted Part 3 of the task due to the absence of an Arduino Board.
+
+
+

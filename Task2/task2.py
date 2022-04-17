@@ -1,40 +1,83 @@
-import cv2
-import numpy as np 
-"""
-This task comprises two main parts and one bonus part:
-1. In the first part, you have to generate a 1-2 minute long video using
-12-15 (can be more depending on you) images. These images will be of traffic lights
-(it will be two images, with green light and red light), Stop signals, speed signals(2-3 different speeds), 
-turn signals, etc. The mentioned ones are compulsory to use in generating the video. Along with it, use more 
-images to complete the 12-15 images requirement.
-#! 2. In the second part, the video generated in the first part will be run and depending on the different road signals, 
-#! the program will generate different outputs and store them in a text file. For example, let’s say the output stores
-#!  the speeds of the left and right motors, so upon showing the green signal, both the motors will keep running. If a 
-#!  red sign pops up, the motors will stop unless and until a new image of the green sign comes up. Some things have to
-#!   be taken care of, like, if a red sign has come up, or a Stop signal has come up, then immediately after it, a green 
-#!   sign should come, or a Go signal should come.
+from tensorflow.keras.models import load_model
+import numpy as np
+import cv2 as cv
+from PIL import Image
 
-"""
+classes = ('20','30','50','60','70','80',     
+            'End of speed limit (80km/h)',     
+            '100','120',     
+           'No passing',   
+           'No passing veh over 3.5 tons',     
+           'Right-of-way at intersection',     
+           'Priority road',    
+           'Yield',     
+           'Stop',       
+           'No vehicles',       
+           'Veh > 3.5 tons prohibited',       
+           'No entry',       
+           'General caution',     
+           'Dangerous curve left',      
+           'Dangerous curve right',   
+           'Double curve',      
+           'Bumpy road',     
+           'Slippery road',       
+           'Road narrows on the right',  
+           'Road work',    
+           'Traffic signals',      
+           'Pedestrians',     
+           'Children crossing',     
+           'Turn left ahead',       
+           'Beware of ice/snow',
+           'Wild animals crossing',      
+           'End speed + passing limits',      
+           'Turn right ahead',     
+           'Bicycle Crossing',       
+           'Ahead only',      
+           'Go straight or right',      
+           'Go straight or left',      
+           'Red Traffic Light',     
+           'Keep left',      
+           'Green Traffic Light',     
+           'End of no passing',      
+           'End no passing veh > 3.5 tons')
+model = load_model('Task2/traffic_classifier.h5')
+cap = cv.VideoCapture('Task2/video.mp4')
+sign = 0
+diameter = 0.1524        # diameter = 6 inches or 15.24 cm
 
-def signal(img):
-    pass
+while True:
+    with open("Task2/output.txt", "a") as myfile:
+        success, frame = cap.read()
+        if not success:
+            break
+        image = Image.fromarray(frame)
+        image = image.resize((30, 30))
+        image = np.expand_dims(image, axis=0)
+        image = np.array(image)
+        pred = model.predict([image]).argmax()
+        tempsign = classes[pred]
+        if tempsign != sign:
+            sign = tempsign
+            if sign in ["Stop", "Red Traffic Light"]:
+                myfile.write("Stop Motor\n")
+                print(sign)
+            elif sign == "Green Traffic Light":
+                myfile.write("Start Motor\n")
+                print(sign)
+            elif sign in ['20','30','50','60','70','80','100','120'] :
+                rpm = (50*int(sign))/(3*np.pi*diameter)             # calculating rpm from speed(km/hr)
+                myfile.write("%.2f"%rpm)
+                myfile.write("\n")
+                print(sign + " km/hr")
+            else:
+                myfile.write(sign + "\n")
+                print(sign)
 
-def turn(img):
-    pass
 
-def speed(img):
-    pass
+        cv.imshow('Output', frame)
 
-vid = cv2.VideoCapture('task2_video.mp4')
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
 
-while 1: 
-  ret, frame = vid.read()
-  cv2.imshow('Video',frame)
-
-
-  if cv2.waitKey(1) & 0xFF == ord('q') or cv2.waitKey(1) & 0xFF == ord('0'): 
-    break
-
-
-vid.release()
-cv2.destroyAllWindows()
+cap.release()
+cv.destroyAllWindows()
