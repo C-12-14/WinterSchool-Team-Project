@@ -112,6 +112,8 @@ class MazeTraversal:
                     break
     
     def dfs(self):
+        global path_found
+        path_found = False
         img = np.copy(self.inimg)
         self.dfs2(img, self.start)
         #print("Distance: "+str(dist) + " pixels")
@@ -179,6 +181,7 @@ class MazeTraversal:
         visited = []
         current = self.start
         distance = np.full((n,m), np.inf)
+        visited.append(current)
         pixel_distance = np.full((n,m), np.inf)
         distance[self.start] = 0
         pixel_distance[self.start] = 0
@@ -204,7 +207,10 @@ class MazeTraversal:
                     if distance[point] < min:
                         min = distance[point]
                         current = point
-                visited.remove(current)
+                if not len(visited):
+                    return None, None
+                else:
+                    visited.remove(current)
             else:
                 img[self.end] = BLUE
                 distance[self.end] = distance[current] +find_dist(self.end, current)

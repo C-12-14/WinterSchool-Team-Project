@@ -1,47 +1,36 @@
 import cv2
 from cv2 import INTER_AREA
 import numpy as np
-import random 
+import random
+from Traversal_mod import MazeTraversal
 
 RED = (0,0,255)
 BLUE = (255,0,0)
-maze = []
+maze = []   # For keeping track of valid path (White pixels)
 prob = random.randint(20,30)
-
-def inRange(canvas,point):
-    #checks if point is within the range of the image's dimensions
-    return (point[0]>=0 and point[0]<canvas.shape[0] and point[1]>=0 and point[1]<canvas.shape[1])
-
-
-def checkNbhd(canvas, x, y):
-    #check if atleast more than one white neighbour is present
-    count = 0
-    for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
-        if inRange(canvas, (x+i, y+j)) and (canvas[x+i][y+j] == (255,255,255)).all():
-            count+=1
-    if(count>1): 
-        return True
-    else:
-        return False
+startXY = ()
+endXY = ()
 
 def createMaze():
     canvas = np.full((50, 50, 3), 255, dtype=np.uint8)
-    # canvas = np.full((50, 50,3), 255, dtype=np.uint8)
     for i in range(canvas.shape[0]):
         for j in range(canvas.shape[1]):
             randomnumber = random.randint(1, 100)
-            if randomnumber<prob and checkNbhd(canvas,i,j):
+            if randomnumber<prob:
                 canvas[i][j] = (0,0,0)
             else:
-                if checkNbhd(canvas,i,j):
-                    maze.append((i,j))
+                maze.append((i,j))  # Adding the pixel into valid path
 
-    startXY = random.choice(maze)
-    while(not checkNbhd(canvas,startXY[0],startXY[1])):
-        startXY = random.choice(maze)
-    endXY  = random.choice(maze)
-    while(endXY==startXY or not checkNbhd(canvas,endXY[0],endXY[1])):
-        endXY  = random.choice(maze)
+
+    while True:
+        global startXY, endXY
+        startXY = random.choice(maze)   # Choosing a start location in the list of white pixels
+        endXY  = random.choice(maze)    # Choosing a end location in the list of white pixels
+        temp = canvas.copy()
+        algos = MazeTraversal(temp, startXY, endXY)
+        a, b = algos.aStar(temp)
+        if a is not None:
+            break
 
     canvas[startXY] = RED
     canvas[endXY] = BLUE

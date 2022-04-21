@@ -16,7 +16,7 @@ avg_dist_Dfs = 0
 avg_dist_Dijkstra = 0
 avg_dist_Astar = 0
 
-n=100 #number of iterations
+n=1000 #number of iterations
 
 for i in range (n):
     maze,startXY,endXY, smaller_maze = createMaze()
@@ -58,18 +58,18 @@ avg_dist_Dfs /= n
 avg_dist_Dijkstra /= n
 avg_dist_Astar /= n
 
-print("Average time taken by BFS: "+str(avg_time_Bfs))
+print("Average time taken by BFS: "+str(avg_time_Bfs) + " Seconds")
 print("Average distance travelled in BFS: "+str(avg_dist_Bfs)+" pixels")
-print("------------------------------------------------")
+print("----------------------------------------------------------")
 
-print("Average time taken by DFS: "+str(avg_time_Dfs))
+print("Average time taken by DFS: "+str(avg_time_Dfs)+ " Seconds")
 print("Average distance travelled in DFS: "+str(avg_dist_Dfs)+" pixels")
-print("------------------------------------------------")
+print("----------------------------------------------------------")
 
-print("Average time taken by Dijkstra: "+str(avg_time_Dijkstra))
+print("Average time taken by Dijkstra: "+str(avg_time_Dijkstra)+ " Seconds")
 print("Average distance travelled in Dijkstra: "+str(avg_dist_Dijkstra)+" pixels")
-print("------------------------------------------------")
+print("----------------------------------------------------------")
 
-print("Average time taken by Astar: "+str(avg_time_Astar))
+print("Average time taken by Astar: "+str(avg_time_Astar)+ " Seconds")
 print("Average distance travelled in Astar: "+str(avg_dist_Astar)+" pixels")
-print("------------------------------------------------")
+print("----------------------------------------------------------")

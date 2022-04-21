@@ -37,23 +37,23 @@ class MazeTraversal:
         q = [[self.start]]       # QUeue for keeping track of path
 
         while q:
-            if img.shape[0] < 100:
-                showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("bfs", showImg)
-                cv2.waitKey(1)
-            else:
-                cv2.imshow("bfs", img)
+            # if img.shape[0] < 100:
+            #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+            #     cv2.imshow("bfs", showImg)
+            #     cv2.waitKey(1)
+            # else:
+            #     cv2.imshow("bfs", img)
             path = q.pop(0)         # Choosing a path from the queue
             r, s = path[-1]         # Coordinates of the last pixel in path
 
             for (u,v) in [(-1,0), (1,0), (0,-1), (0,1)]:        # Looping over the four corners of the pixel
                     if inRange(img, (r+u,s+v)) and (img[r+u][s+v]!=BLACK).any() and (img[r+u][s+v]!=COLOR2).any():
-                        if img.shape[0] < 100:
-                            showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                            cv2.imshow("bfs", showImg)
-                            cv2.waitKey(1)
-                        else:
-                            cv2.imshow("bfs", img)
+                        # if img.shape[0] < 100:
+                        #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+                        #     cv2.imshow("bfs", showImg)
+                        #     cv2.waitKey(1)
+                        # else:
+                        #     cv2.imshow("bfs", img)
                         if (img[r+u][s+v] == WHITE).all():
                             img[r+u][s+v] = COLOR2          # Coloring the visited pixel
                             new_path = list(path)           
@@ -68,13 +68,14 @@ class MazeTraversal:
         path.pop(0)
         for pixel in path:
             img[pixel] = GREEN
-            if img.shape[0] < 100:
-                showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("bfs", showImg)
-                cv2.waitKey(1)
-            else:
-                cv2.imshow("bfs", img)
-        print("Distance: "+str(len(path)+1) + " pixels")
+            # if img.shape[0] < 100:
+            #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+            #     cv2.imshow("bfs", showImg)
+            #     cv2.waitKey(1)
+            # else:
+            #     cv2.imshow("bfs", img)
+        #print("Distance: "+str(len(path)+1) + " pixels")
+        return len(path)+1
 
 
     # <--------------------- DFS --------------------->
@@ -83,14 +84,14 @@ class MazeTraversal:
         global path_found
         global dist
         i, j = start
-        if img.shape[0] < 100:
-            showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-            cv2.imshow("dfs", showImg)
-            cv2.waitKey(1)
-        else:
-            cv2.imshow("dfs", img)
+        # if img.shape[0] < 100:
+        #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+        #     cv2.imshow("dfs", showImg)
+        #     cv2.waitKey(1)
+        # else:
+        #     cv2.imshow("dfs", img)
         for (x,y) in [(-1,0), (1,0), (0,-1), (0,1)]:        # Loops over the surrounding pixels
-            if inRange(img, (x+i, y+j)) and not (img[x+i][y+j]==BLACK).all() and not (img[x+i][y+j]==COLOR2).all():     # Check if pixel lies in the valid path
+            if inRange(img, (x+i, y+j)) and (img[x+i][y+j]!=BLACK).any() and (img[x+i][y+j]!=COLOR2).any():     # Check if pixel lies in the valid path
                 if ((x+i, y+j) == self.end):       
                     path_found = True
                     img[i][j] = GREEN
@@ -101,52 +102,50 @@ class MazeTraversal:
                             self.dfs2(img, (x+i,y+j))
                 if path_found:      # Stops further recursion and starts traceback
                     img[i][j] = GREEN
-                    if img.shape[0] < 100:
-                        showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                        cv2.imshow("dfs", showImg)
-                        cv2.waitKey(1)
-                    else:
-                        cv2.imshow("dfs", img)
+                    # if img.shape[0] < 100:
+                    #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+                    #     cv2.imshow("dfs", showImg)
+                    #     cv2.waitKey(1)
+                    # else:
+                    #     cv2.imshow("dfs", img)
                     dist +=1
                     break
     
     def dfs(self):
+        global path_found
+        path_found = False
         img = np.copy(self.inimg)
         self.dfs2(img, self.start)
-        print("Distance: "+str(dist) + " pixels")
+        #print("Distance: "+str(dist) + " pixels")
+        return int(dist)
 
 
     # <--------------------- DIJKSTRA --------------------->
 
     def dijkstra(self, img):
-        n, m = img.shape[:2]    # Height and Width of the maze
-        parent = np.zeros((n,m,2))  # Keeping track of the parent pixels
-        visited = []    # Keepinig a list of visited pixels so that we dont visit the same pixel again
+        # img = np.copy(self.inimg)
+        n, m = img.shape[:2]
+        parent = np.zeros((n,m,2))
+        visited = []
         current = self.start
-        distance = np.full((n,m), np.inf)   # initialising the distance of every pixel to infinity
+        distance = np.full((n,m), np.inf)
         distance[self.start] = 0
-        # Loop runs until we reach the target
         while True:
             if current != self.end:
-                for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:   # Visiting all 4 neighboring pixels
-
-                    # Code for visualisation
-                    if img.shape[0] < 100:      # Conditions for scaling
-                        showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                        cv2.imshow("dijkastra", showImg)
-                        cv2.waitKey(1)
-                    else:
-                        cv2.imshow("dijkastra", img)
-                    
+                for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
+                    # if img.shape[0] < 100:
+                    #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+                    #     cv2.imshow("dijkastra", showImg)
+                    #     cv2.waitKey(1)
+                    # else:
+                    #     cv2.imshow("dijkastra", img)
                     newpoint = (current[0]+i, current[1]+j)
-                    # Checking if the pixel lies in the valid path or not
                     if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
-                        if distance[newpoint] > distance[current] + find_dist(newpoint, current):   
+                        if distance[newpoint] > distance[current] + find_dist(newpoint, current):
                             distance[newpoint] = distance[current] + find_dist(newpoint, current)
-                            img[newpoint] = COLOR2  # Coloring the visited pixels
-                            parent[newpoint] = current  # Assigning a parent to the visited pixel
+                            img[newpoint] = COLOR2
+                            parent[newpoint] =  current
                             visited.append(newpoint)
-                # Choosing the pixel with the least current distance for analysis in the next cycle
                     min = np.inf
                 for point in visited:
                     if distance[point] < min:
@@ -159,50 +158,42 @@ class MazeTraversal:
                 return distance[self.end], parent
 
     def trackDijkastra(self):
-        img = np.copy(self.inimg)       # Making a copy of the maze for the algorithm to work on
-        dist, parent = self.dijkstra(img)   # Running the algorithm
-        # Tracking the final path
+        img = np.copy(self.inimg)
+        dist, parent = self.dijkstra(img)
         current = tuple(list(map(int, parent[self.end])))
         while current != self.start:
             img[current] = GREEN
             current = tuple(list(map(int, parent[current])))
-            # Scaling the right maze
-            if img.shape[0] < 100:
-                showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("dijkastra", showImg)
-                cv2.waitKey(1)
-            else:
-                cv2.imshow("dijkastra", img)
-        # Printing the path distancce 
-        print("Distance: " + str(int(dist)) + " pixels")
+            # if img.shape[0] < 100:
+            #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+            #     cv2.imshow("dijkastra", showImg)
+            #     cv2.waitKey(1)
+            # else:
+            #     cv2.imshow("dijkastra", img)
+        #print("Distance: " + str(int(dist)) + " pixels")
+        return int(dist)
 
 
     # <--------------------- A* --------------------->
     def aStar(self, img):
-        n, m = img.shape[:2]    # Height and Width of the maze
-        parent = np.zeros((n,m,2))  # Keeping track of the parent pixels
-        visited = []    # Keepinig a list of visited pixels so that we dont visit the same pixel again
+        n, m = img.shape[:2]
+        parent = np.zeros((n,m,2))
+        visited = []
         current = self.start
-        visited.append(current)
-        distance = np.full((n,m), np.inf)   # initialising the distance of every pixel to infinity
+        distance = np.full((n,m), np.inf)
         pixel_distance = np.full((n,m), np.inf)
         distance[self.start] = 0
         pixel_distance[self.start] = 0
-         # Loop runs until we reach the target 
         while True:
             if current != self.end:
-                for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:   # Visiting all 4 neighboring pixels
-
-                    # Code for visualisation
-                    if img.shape[0] < 100:
-                        showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                        cv2.imshow("A*", showImg)
-                        cv2.waitKey(1)
-                    else:
-                        cv2.imshow("A*", img)
-
+                for (i, j) in [(-1,0), (1,0), (0,-1), (0,1)]:
+                    # if img.shape[0] < 100:
+                    #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+                    #     cv2.imshow("A*", showImg)
+                    #     cv2.waitKey(1)
+                    # else:
+                    #     cv2.imshow("A*", img)
                     newpoint = (current[0]+i, current[1]+j)
-                    # Checking if the pixel lies in the valid path or not
                     if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
                         pixel_distance[newpoint] = pixel_distance[current] + find_dist(newpoint, current)
                         if distance[newpoint] > pixel_distance[newpoint]+ find_dist(newpoint, current) + find_dist(newpoint, self.end):
@@ -210,37 +201,32 @@ class MazeTraversal:
                             img[newpoint] = COLOR2
                             parent[newpoint] =  current
                             visited.append(newpoint)
-                # Choosing the pixel with the least current distance for analysis in the next cycle
                     min = np.inf
                 for point in visited:
                     if distance[point] < min:
                         min = distance[point]
                         current = point
-                if not len(visited):
-                    return None, None
-                else:
-                    visited.remove(current)
+                visited.remove(current)
             else:
                 img[self.end] = BLUE
                 distance[self.end] = distance[current] +find_dist(self.end, current)
                 return distance[self.end], parent
 
     def trackaStar(self):
-        img = np.copy(self.inimg)       # Making a copy of the maze for the algorithm to work on
-        dist, parent = self.aStar(img)   # Running the algorithm
-        # Tracking the final path
+        img = np.copy(self.inimg)
+        dist, parent = self.aStar(img)
         current = tuple(list(map(int, parent[self.end])))
         dist = 1
         while current != self.start:
             dist += 1
             img[current] = GREEN
             current = tuple(list(map(int, parent[current])))
-            # Scaling the right maze
-            if img.shape[0] < 100:
-                showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("A*", showImg)
-                cv2.waitKey(1)
-            else:
-                cv2.imshow("A*", img)
-        # Printing the final
-        print("Distance: " + str(dist) + " pixels")
+            # if img.shape[0] < 100:
+            #     showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
+            #     cv2.imshow("A*", showImg)
+            #     cv2.waitKey(1)
+            # else:
+            #     cv2.imshow("A*", img)
+        #print("Distance: " + str(dist) + " pixels")
+        return int(dist)
+    
