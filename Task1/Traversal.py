@@ -133,10 +133,10 @@ class MazeTraversal:
                     # Code for visualisation
                     if img.shape[0] < 100:      # Conditions for scaling
                         showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                        cv2.imshow("dijkastra", showImg)
+                        cv2.imshow("dijkstra", showImg)
                         cv2.waitKey(1)
                     else:
-                        cv2.imshow("dijkastra", img)
+                        cv2.imshow("dijkstra", img)
                     
                     newpoint = (current[0]+i, current[1]+j)
                     # Checking if the pixel lies in the valid path or not
@@ -158,7 +158,7 @@ class MazeTraversal:
                 distance[self.end] = distance[current] +find_dist(self.end, current)
                 return distance[self.end], parent
 
-    def trackDijkastra(self):
+    def trackDijkstra(self):
         img = np.copy(self.inimg)       # Making a copy of the maze for the algorithm to work on
         dist, parent = self.dijkstra(img)   # Running the algorithm
         # Tracking the final path
@@ -169,10 +169,10 @@ class MazeTraversal:
             # Scaling the right maze
             if img.shape[0] < 100:
                 showImg = cv2.resize(img, (500,500), interpolation=cv2.INTER_AREA)
-                cv2.imshow("dijkastra", showImg)
+                cv2.imshow("dijkstra", showImg)
                 cv2.waitKey(1)
             else:
-                cv2.imshow("dijkastra", img)
+                cv2.imshow("dijkstra", img)
         # Printing the path distancce 
         print("Distance: " + str(int(dist)) + " pixels")
 

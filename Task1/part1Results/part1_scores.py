@@ -37,7 +37,7 @@ for i in range (n):
     temp = np.copy(smaller_maze)
     algos = MazeTraversal(temp, startXY, endXY)
     start = time.time()
-    avg_dist_Dijkstra += algos.trackDijkastra()
+    avg_dist_Dijkstra += algos.trackDijkstra()
     end = time.time()
     avg_time_Dijkstra += (end-start)
 

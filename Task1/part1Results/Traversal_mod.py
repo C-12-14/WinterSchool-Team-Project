@@ -157,7 +157,7 @@ class MazeTraversal:
                 distance[self.end] = distance[current] +find_dist(self.end, current)
                 return distance[self.end], parent
 
-    def trackDijkastra(self):
+    def trackDijkstra(self):
         img = np.copy(self.inimg)
         dist, parent = self.dijkstra(img)
         current = tuple(list(map(int, parent[self.end])))
