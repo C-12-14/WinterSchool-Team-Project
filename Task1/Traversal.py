@@ -205,8 +205,8 @@ class MazeTraversal:
                     # Checking if the pixel lies in the valid path or not
                     if inRange(img, newpoint) and not (img[newpoint] == BLACK).all():
                         pixel_distance[newpoint] = pixel_distance[current] + find_dist(newpoint, current)
-                        if distance[newpoint] > pixel_distance[newpoint]+ find_dist(newpoint, current) + find_dist(newpoint, self.end):
-                            distance[newpoint] = pixel_distance[newpoint] + find_dist(newpoint, current)+ find_dist(newpoint, self.end)
+                        if distance[newpoint] > pixel_distance[newpoint] + find_dist(newpoint, self.end):
+                            distance[newpoint] = pixel_distance[newpoint] + find_dist(newpoint, self.end)
                             img[newpoint] = COLOR2
                             parent[newpoint] =  current
                             visited.append(newpoint)

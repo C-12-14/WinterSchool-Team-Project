@@ -12,7 +12,7 @@ startXY = ()
 endXY = ()
 
 def createMaze():
-    canvas = np.full((50, 50, 3), 255, dtype=np.uint8)
+    canvas = np.full((30, 30, 3), 255, dtype=np.uint8)
     for i in range(canvas.shape[0]):
         for j in range(canvas.shape[1]):
             randomnumber = random.randint(1, 100)
@@ -20,7 +20,6 @@ def createMaze():
                 canvas[i][j] = (0,0,0)
             else:
                 maze.append((i,j))  # Adding the pixel into valid path
-
 
     while True:
         global startXY, endXY
